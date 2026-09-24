@@ -25,7 +25,7 @@ const baseQuery = fetchBaseQuery({
 export const adminApiSlice = createApi({
   reducerPath: "adminApi",
   baseQuery,
-  tagTypes: ["Category", "Model", "Service", "Product", "CMS", "Contact", "Stats"],
+  tagTypes: ["Stats", "User", "Product", "Order", "Setting"],
   endpoints: (builder) => ({
     // Auth
     loginAdmin: builder.mutation({
@@ -45,100 +45,16 @@ export const adminApiSlice = createApi({
       providesTags: ["Stats"],
     }),
 
-    // Categories
-    getCategories: builder.query({
-      query: () => "/categories/admin",
-      providesTags: ["Category"],
-    }),
-    createCategory: builder.mutation({
-      query: (data) => ({
-        url: "/categories",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["Category", "Stats"],
-    }),
-    updateCategory: builder.mutation({
-      query: ({ id, ...data }) => ({
-        url: `/categories/${id}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["Category"],
-    }),
-    deleteCategory: builder.mutation({
-      query: (id) => ({
-        url: `/categories/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Category", "Stats"],
-    }),
-
-    // Device Models
-    getModels: builder.query({
+    // Users Management
+    getUsers: builder.query({
       query: (params) => ({
-        url: "/models/admin",
+        url: "/users",
         params,
       }),
-      providesTags: ["Model"],
-    }),
-    createModel: builder.mutation({
-      query: (data) => ({
-        url: "/models",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["Model", "Category", "Stats"],
-    }),
-    updateModel: builder.mutation({
-      query: ({ id, ...data }) => ({
-        url: `/models/${id}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["Model", "Category"],
-    }),
-    deleteModel: builder.mutation({
-      query: (id) => ({
-        url: `/models/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Model", "Category", "Stats"],
+      providesTags: ["User"],
     }),
 
-    // Repair Services
-    getServices: builder.query({
-      query: (params) => ({
-        url: "/services",
-        params,
-      }),
-      providesTags: ["Service"],
-    }),
-    createService: builder.mutation({
-      query: (data) => ({
-        url: "/services",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["Service", "Model", "Stats"],
-    }),
-    updateService: builder.mutation({
-      query: ({ id, ...data }) => ({
-        url: `/services/${id}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["Service", "Model"],
-    }),
-    deleteService: builder.mutation({
-      query: (id) => ({
-        url: `/services/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Service", "Model", "Stats"],
-    }),
-
-    // Marketplace Products
+    // Products Management
     getProducts: builder.query({
       query: (params) => ({
         url: "/products",
@@ -146,83 +62,20 @@ export const adminApiSlice = createApi({
       }),
       providesTags: ["Product"],
     }),
-    createProduct: builder.mutation({
-      query: (data) => ({
-        url: "/products",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: ["Product", "Stats"],
-    }),
-    updateProduct: builder.mutation({
-      query: ({ id, ...data }) => ({
-        url: `/products/${id}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["Product", "Stats"],
-    }),
-    deleteProduct: builder.mutation({
-      query: (id) => ({
-        url: `/products/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Product", "Stats"],
-    }),
 
-    // CMS & Policies
-    getAllCMS: builder.query({
-      query: () => "/cms",
-      providesTags: ["CMS"],
-    }),
-    getCMSByKey: builder.query({
-      query: (key) => `/cms/${key}`,
-      providesTags: (result, error, key) => [{ type: "CMS", id: key }],
-    }),
-    updateCMSByKey: builder.mutation({
-      query: ({ key, data }) => ({
-        url: `/cms/${key}`,
-        method: "PUT",
-        body: { data },
-      }),
-      invalidatesTags: (result, error, { key }) => ["CMS", { type: "CMS", id: key }],
-    }),
-
-    // Contact Leads
-    getContacts: builder.query({
+    // Orders Management
+    getOrders: builder.query({
       query: (params) => ({
-        url: "/contact",
+        url: "/orders",
         params,
       }),
-      providesTags: ["Contact"],
-    }),
-    updateContactStatus: builder.mutation({
-      query: ({ id, ...data }) => ({
-        url: `/contact/${id}`,
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: ["Contact", "Stats"],
-    }),
-    deleteContact: builder.mutation({
-      query: (id) => ({
-        url: `/contact/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Contact", "Stats"],
+      providesTags: ["Order"],
     }),
 
     // File Upload
     uploadImage: builder.mutation({
       query: (formData) => ({
         url: "/upload",
-        method: "POST",
-        body: formData,
-      }),
-    }),
-    uploadMultipleImages: builder.mutation({
-      query: (formData) => ({
-        url: "/upload/multiple",
         method: "POST",
         body: formData,
       }),
@@ -234,28 +87,8 @@ export const {
   useLoginAdminMutation,
   useGetMeQuery,
   useGetStatsQuery,
-  useGetCategoriesQuery,
-  useCreateCategoryMutation,
-  useUpdateCategoryMutation,
-  useDeleteCategoryMutation,
-  useGetModelsQuery,
-  useCreateModelMutation,
-  useUpdateModelMutation,
-  useDeleteModelMutation,
-  useGetServicesQuery,
-  useCreateServiceMutation,
-  useUpdateServiceMutation,
-  useDeleteServiceMutation,
+  useGetUsersQuery,
   useGetProductsQuery,
-  useCreateProductMutation,
-  useUpdateProductMutation,
-  useDeleteProductMutation,
-  useGetAllCMSQuery,
-  useGetCMSByKeyQuery,
-  useUpdateCMSByKeyMutation,
-  useGetContactsQuery,
-  useUpdateContactStatusMutation,
-  useDeleteContactMutation,
+  useGetOrdersQuery,
   useUploadImageMutation,
-  useUploadMultipleImagesMutation,
 } = adminApiSlice;
