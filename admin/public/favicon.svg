@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Bright High-Contrast Neon Green Background -->
+  <rect width="64" height="64" rx="14" fill="#80CF16"/>
+  <!-- Ultra-Bold Black S Symbol with high legibility at 16px -->
+  <path
+    d="M46 19H24C19.5817 19 16 22.5817 16 27C16 31.4183 19.5817 35 24 35H40C44.4183 35 48 38.5817 48 43C48 47.4183 44.4183 51 40 51H18"
+    stroke="#09090B"
+    stroke-width="8.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <circle cx="46" cy="19" r="4.25" fill="#09090B"/>
+  <circle cx="18" cy="51" r="4.25" fill="#09090B"/>
+</svg>
