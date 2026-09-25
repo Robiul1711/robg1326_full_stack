@@ -181,42 +181,110 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
-    @apply bg-background text-foreground;
+    background-color: #080a0d;
+    color: #f3f4f6;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
   }
 }
 
 .section-padding-x {
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 .section-padding-y {
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
 }
 
 @media screen and (min-width: 650px) {
   .section-padding-x {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
   .section-padding-y {
-    padding-top: 40px;
-    padding-bottom: 40px;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .section-padding-x {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+  .section-padding-y {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
   }
 }
 
 @media screen and (min-width: 1460px) {
   .section-padding-x {
-    padding-left: 120px;
-    padding-right: 120px;
+    padding-left: 7.5rem;
+    padding-right: 7.5rem;
   }
   .section-padding-y {
-    padding-top: 100px;
-    padding-bottom: 100px;
+    padding-top: 7rem;
+    padding-bottom: 7rem;
   }
 }
 
 .bg-custom {
   background: var(--color-bg-custom);
 }
+
+/* Original Project Gradients */
+.btn-primary-gradient {
+  background: linear-gradient(135deg, #03f769, #77ffb0);
+  color: #000000;
+  box-shadow: 0 0 24px rgba(3, 247, 105, 0.4);
+  transition: all 0.3s ease;
+}
+.btn-primary-gradient:hover {
+  background: linear-gradient(135deg, #02e05f, #66fca3);
+  box-shadow: 0 0 32px rgba(3, 247, 105, 0.65);
+  transform: translateY(-2px);
+}
+
+.badge-gradient {
+  background: linear-gradient(135deg, #03f769, #f5ff9b);
+  color: #000000;
+}
+
+/* Neon glow utilities */
+.neon-glow-btn {
+  box-shadow: 0 0 25px rgba(3, 247, 105, 0.45);
+  transition: all 0.3s ease;
+}
+.neon-glow-btn:hover {
+  box-shadow: 0 0 35px rgba(3, 247, 105, 0.65);
+  transform: translateY(-2px);
+}
+
+.neon-border-card {
+  border: 1px solid rgba(3, 247, 105, 0.35);
+  box-shadow: 0 0 25px rgba(3, 247, 105, 0.15);
+}
+
+/* Custom Ultra-Thin Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #080a0d;
+}
+::-webkit-scrollbar-thumb {
+  background: #232d3b;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #03f769;
+}
+
+
