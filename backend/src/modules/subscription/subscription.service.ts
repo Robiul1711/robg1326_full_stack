@@ -4,7 +4,7 @@ import { env } from "../../config/env";
 import { successResponse, errorResponse } from "../../common/response";
 import { User } from "../auth/auth.model";
 import { Subscription } from "./subscription.model";
-import { CMSContent } from "../cms/cms.model";
+import { CMSContent, IPackageItem } from "../cms/cms.model";
 
 const stripe = env.STRIPE_SECRET_KEY
   ? new Stripe(env.STRIPE_SECRET_KEY, {
@@ -34,11 +34,11 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
 
     // Fetch CMS content for dynamic packages
     const cms = await CMSContent.findOne();
-    let selectedPackage = null;
+    let selectedPackage: IPackageItem | undefined = undefined;
 
     if (cms?.packages && cms.packages.length > 0) {
       selectedPackage = cms.packages.find(
-        (p) =>
+        (p: IPackageItem) =>
           p.id === packageId ||
           p.id === plan ||
           p.name.toLowerCase() === String(plan).toLowerCase() ||
