@@ -1,18 +1,22 @@
 import { Router } from "express";
 import {
-  createSubscription,
-  getSubscriptions,
-  getSubscriptionById,
-  updateSubscription,
-  deleteSubscription,
+  createCheckoutSession,
+  verifySession,
+  handleWebhook,
+  getAllSubscriptions,
 } from "./subscription.controller";
+import { authenticate, authorizeAdmin } from "../../common/middleware";
 
 const router = Router();
 
-router.post("/", createSubscription);
-router.get("/", getSubscriptions);
-router.get("/:id", getSubscriptionById);
-router.put("/:id", updateSubscription);
-router.delete("/:id", deleteSubscription);
+// User Stripe Checkout Session
+router.post("/checkout", authenticate, createCheckoutSession);
+router.post("/verify", authenticate, verifySession);
+
+// Stripe Webhook (Raw body is handled or JSON depending on stripe config)
+router.post("/webhook", handleWebhook);
+
+// Admin Orders / Subscriptions List
+router.get("/admin/orders", authenticate, authorizeAdmin, getAllSubscriptions);
 
 export default router;
