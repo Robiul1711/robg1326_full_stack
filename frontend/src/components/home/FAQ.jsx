@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronDown, HelpCircle } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { useGetCmsContentQuery } from "../../redux/api/apiSlice";
 
-const leftColumnFaqs = [
+// Fallback static data (used if API is loading or unavailable)
+const FALLBACK_FAQS = [
   {
     id: 0,
     q: "Is Bet Snipe a sportsbook?",
@@ -18,9 +20,6 @@ const leftColumnFaqs = [
     q: "What happens after my 7-day trial?",
     a: "If you like what you see and don't cancel, your membership will roll into a paid subscription at the tier you selected, using your locked-in rate if you activated during the holiday promo. If you cancel before your trial ends, you will not be billed.",
   },
-];
-
-const rightColumnFaqs = [
   {
     id: 3,
     q: "Do I have to pay to sign up?",
@@ -39,8 +38,25 @@ const rightColumnFaqs = [
 ];
 
 const FAQ = () => {
-  // Allow multiple or single open state without blank gaps
-  const [openIds, setOpenIds] = useState([0, 3]);
+  const { data: cmsRes } = useGetCmsContentQuery();
+
+  // Use API data if available, otherwise fallback to static data
+  const allFaqs =
+    cmsRes?.data?.faqs && cmsRes.data.faqs.length > 0
+      ? cmsRes.data.faqs
+      : FALLBACK_FAQS;
+
+  // Split into two columns: left = first half, right = second half
+  const midpoint = Math.ceil(allFaqs.length / 2);
+  const leftColumnFaqs = allFaqs.slice(0, midpoint);
+  const rightColumnFaqs = allFaqs.slice(midpoint);
+
+  // Open first item of each column by default
+  const defaultOpen = [
+    leftColumnFaqs[0]?.id ?? 0,
+    rightColumnFaqs[0]?.id ?? 3,
+  ];
+  const [openIds, setOpenIds] = useState(defaultOpen);
 
   const toggleFAQ = (id) => {
     setOpenIds((prev) =>
@@ -113,7 +129,7 @@ const FAQ = () => {
           </h2>
         </div>
 
-        {/* 2 Independent Columns Grid - Prevents Any Blank Space on Expand */}
+        {/* 2 Independent Columns Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 items-start">
           {/* Left Column */}
           <div className="flex flex-col gap-4 sm:gap-5">

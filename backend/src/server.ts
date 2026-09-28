@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import connectDB from "./config/db";
 import { env } from "./config/env";
 import app from "./app";
+import { seedDatabase } from "./config/seed";
 
 const server = http.createServer(app);
 
@@ -21,12 +22,17 @@ io.on("connection", (socket) => {
   });
 });
 
-connectDB();
+const startServer = async () => {
+  await connectDB();
+  await seedDatabase();
 
-const PORT = Number(env.PORT) || 5000;
+  const PORT = Number(env.PORT) || 5000;
+  server.listen(PORT, () => {
+    console.log(`🚀 BetSnipe Server listening on http://localhost:${PORT}`);
+  });
+};
 
-server.listen(PORT, () => {
-  console.log(`Server listening on http://localhost:${PORT}`);
-});
+startServer();
 
 export { io };
+

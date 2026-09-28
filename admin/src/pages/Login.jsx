@@ -23,22 +23,20 @@ const Login = () => {
 
     try {
       const res = await loginAdmin({ email, password }).unwrap();
-      dispatch(setCredentials(res));
+      const userData = res?.data || res;
+      if (userData?.role !== "admin") {
+        toast.error("Access denied: You do not have admin permissions");
+        return;
+      }
+      dispatch(setCredentials(userData));
       toast.success("Welcome back, Admin!");
       navigate("/");
     } catch (err) {
-      // Allow seamless fallback in development when backend is being configured
-      const fallbackUser = {
-        name: "Super Admin",
-        email: email,
-        role: "admin",
-        token: "demo_admin_jwt_token_" + Date.now(),
-      };
-      dispatch(setCredentials(fallbackUser));
-      toast.success("Signed in as Admin!");
-      navigate("/");
+      const errorMessage = err?.data?.message || err?.error || "Invalid email or password";
+      toast.error(errorMessage);
     }
   };
+
 
   const handleDemoLogin = () => {
     const demoUser = {

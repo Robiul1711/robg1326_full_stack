@@ -1,27 +1,24 @@
 import mongoose from "mongoose";
+import dns from "dns";
 
-const DIRECT_URI = "mongodb://muhammadsefat55_db_user:nVKdLG0RZaXpC6YR@ac-dyckxpm-shard-00-00.1eh7urg.mongodb.net:27017,ac-dyckxpm-shard-00-01.1eh7urg.mongodb.net:27017,ac-dyckxpm-shard-00-02.1eh7urg.mongodb.net:27017/robg1326?ssl=true&replicaSet=atlas-3cjnlz-shard-0&authSource=admin&retryWrites=true&w=majority";
+// Fix SRV DNS resolution on Windows / Node
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI as string, {
-      family: 4,
-      serverSelectionTimeoutMS: 5000,
+    const uri = process.env.MONGODB_URI;
+    if (!uri) {
+      throw new Error("MONGODB_URI is not defined in environment variables");
+    }
+    const conn = await mongoose.connect(uri, {
+      serverSelectionTimeoutMS: 10000,
     });
     console.log(`🍃 MongoDB Connected: ${conn.connection.host}`);
   } catch (error: any) {
-    console.warn(`⚠️ SRV connection failed, trying direct connection...`);
-    try {
-      const conn = await mongoose.connect(DIRECT_URI, {
-        family: 4,
-        serverSelectionTimeoutMS: 5000,
-      });
-      console.log(`🍃 MongoDB Connected (fallback): ${conn.connection.host}`);
-    } catch (fallbackError: any) {
-      console.error(`❌ MongoDB Connection Error: ${fallbackError.message}`);
-      process.exit(1);
-    }
+    console.error(`❌ MongoDB Connection Error: ${error.message}`);
+    process.exit(1);
   }
 };
 
 export default connectDB;
+

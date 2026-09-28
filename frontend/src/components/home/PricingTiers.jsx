@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "motion/react";
-import { Check, Sparkles } from "lucide-react";
+import { Check, Sparkles, Loader2 } from "lucide-react";
+import { useCreateCheckoutMutation, useGetCmsContentQuery } from "../../redux/api/apiSlice";
+import { useSelector } from "react-redux";
+import { selectIsAuthenticated } from "../../redux/slices/authSlice";
 
-const pricingPlans = [
+const DEFAULT_PRICING_PLANS = [
   {
+    id: "sharps",
     name: "SHARPS",
     popular: false,
     originalPrice: "$29.99",
     discountPrice: "$14.99",
+    price: 14.99,
     period: "/ month",
     subtitle:
       "For the disciplined everyday bettor who wants sharper straight plays.",
@@ -23,10 +28,12 @@ const pricingPlans = [
       "Sharps Access: After purchase, log in using the same email you paid with. Your Sharps picks unlock automatically.",
   },
   {
+    id: "sniper-elite",
     name: "SNIPER ELITE",
     popular: true,
     originalPrice: "$79.99",
     discountPrice: "$39.99",
+    price: 39.99,
     period: "/ month",
     subtitle:
       "For bettors who want full-board reads, props, and deeper angles.",
@@ -41,10 +48,12 @@ const pricingPlans = [
     accessNote: null,
   },
   {
+    id: "whale-access",
     name: "WHALE ACCESS",
     popular: false,
     originalPrice: "$199.99",
     discountPrice: "$99.99",
+    price: 99.99,
     period: "/ month",
     subtitle: "For high-stakes players who take edges and process seriously.",
     features: [
@@ -60,13 +69,47 @@ const pricingPlans = [
 ];
 
 const PricingTiers = () => {
-  const scrollToLogin = () => {
-    const el = document.querySelector("#login");
-    if (el) {
-      const topOffset = 80;
-      const elementPosition = el.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - topOffset;
-      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const { data: cmsRes } = useGetCmsContentQuery();
+  const [createCheckout, { isLoading: isCheckingOut }] = useCreateCheckoutMutation();
+  const [selectedPlanName, setSelectedPlanName] = useState(null);
+
+  const packages =
+    cmsRes?.data?.packages && cmsRes.data.packages.length > 0
+      ? cmsRes.data.packages
+      : DEFAULT_PRICING_PLANS;
+
+  const handlePlanSelect = async (plan) => {
+    if (!isAuthenticated) {
+      // Store intent for post-login auto-redirect to Stripe
+      sessionStorage.setItem("pending_checkout_package", JSON.stringify(plan));
+      window.dispatchEvent(new Event("pending_checkout_updated"));
+
+      const el = document.querySelector("#login");
+      if (el) {
+        const topOffset = 80;
+        const pos = el.getBoundingClientRect().top + window.pageYOffset - topOffset;
+        window.scrollTo({ top: pos, behavior: "smooth" });
+      }
+      return;
+    }
+
+    try {
+      setSelectedPlanName(plan.name);
+      const res = await createCheckout({
+        plan: plan.id || plan.name,
+        packageId: plan.id || plan.name,
+        amount: plan.price,
+      }).unwrap();
+
+      const checkoutUrl = res?.data?.url || res?.url;
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
+      }
+    } catch (err) {
+      alert(err?.data?.message || "Failed to start checkout. Please try again.");
+    } finally {
+      setSelectedPlanName(null);
     }
   };
 
@@ -101,9 +144,9 @@ const PricingTiers = () => {
 
         {/* Pricing Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-7 items-stretch mb-8">
-          {pricingPlans.map((plan, index) => (
+          {packages.map((plan, index) => (
             <motion.div
-              key={plan.name}
+              key={plan.id || plan.name}
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -130,23 +173,21 @@ const PricingTiers = () => {
                   {plan.name}
                 </h3>
 
-                {/* Price Section */}
-                <div className="mb-3">
-                  <div className="text-xs font-semibold text-gray-400 line-through">
-                    {plan.originalPrice} / month
-                  </div>
-                  <div className="flex items-baseline gap-1 mt-0.5">
-                    <span className="text-2xl sm:text-3xl font-extrabold text-[#cdaa40]">
-                      {plan.discountPrice}
-                    </span>
-                    <span className="text-xs sm:text-sm text-gray-300 font-medium">
-                      {plan.period}
-                    </span>
-                  </div>
+                {/* Price Display */}
+                <div className="flex items-baseline gap-2 mb-3">
+                  <span className="text-sm sm:text-base line-through text-gray-500 font-semibold">
+                    {plan.originalPrice}
+                  </span>
+                  <span className="text-3xl sm:text-4xl font-extrabold text-white">
+                    {plan.discountPrice}
+                  </span>
+                  <span className="text-xs sm:text-sm text-gray-400 font-medium">
+                    {plan.period}
+                  </span>
                 </div>
 
-                {/* Subtitle / Description */}
-                <p className="text-xs sm:text-sm text-gray-300 mb-5 leading-relaxed min-h-[38px]">
+                {/* Subtitle */}
+                <p className="text-xs sm:text-sm text-gray-300 leading-relaxed mb-6">
                   {plan.subtitle}
                 </p>
 
@@ -168,14 +209,22 @@ const PricingTiers = () => {
               <div>
                 {/* CTA Button */}
                 <button
-                  onClick={scrollToLogin}
-                  className={`w-full py-3.5 px-4 rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider cursor-pointer transition-all duration-300 ${
+                  onClick={() => handlePlanSelect(plan)}
+                  disabled={isCheckingOut && selectedPlanName === plan.name}
+                  className={`w-full py-3.5 px-4 rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider cursor-pointer transition-all duration-300 flex items-center justify-center gap-2 ${
                     plan.popular
                       ? "btn-primary-gradient"
                       : "bg-[#141a22] hover:bg-[#1a232e] text-[#03f769] border border-[#03f769]/40 hover:border-[#03f769] shadow-sm hover:-translate-y-0.5"
                   }`}
                 >
-                  {plan.cta}
+                  {isCheckingOut && selectedPlanName === plan.name ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      <span>Connecting to Stripe...</span>
+                    </>
+                  ) : (
+                    <span>{plan.cta}</span>
+                  )}
                 </button>
 
                 {/* Optional Access Note */}

@@ -1,8 +1,17 @@
 import React from "react";
 import { motion } from "motion/react";
 import { ChevronDown, ArrowRight, Activity } from "lucide-react";
+import { useGetCmsContentQuery } from "../../redux/api/apiSlice";
 
 const Hero = () => {
+  const { data: cmsRes } = useGetCmsContentQuery();
+  const heroContent = cmsRes?.data?.hero;
+
+  // CMS values with fallback to hardcoded defaults
+  const headline = heroContent?.headline || "BET SNIPE AGGRESSIVE, DATA-BACKED SPORTS INTEL.";
+  const subheadline = heroContent?.subheadline || "Bet Snipe blends advanced data models, market movement tracking, and sharp-style logic to surface edges before the public reacts. You're still in control of the trigger — we just load the intel.";
+  const ctaButtonText = heroContent?.ctaButtonText || "START 7-DAY FREE TRIAL";
+
   const scrollTo = (id) => {
     const el = document.querySelector(id);
     if (el) {
@@ -13,13 +22,14 @@ const Hero = () => {
     }
   };
 
+
   return (
     <section className="relative pt-24 pb-8 sm:pt-28 sm:pb-10 md:pt-32 md:pb-12 lg:pt-36 lg:pb-14 overflow-hidden">
       {/* Background Ambient Glows */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[450px] md:w-[600px] h-[300px] sm:h-[450px] md:h-[600px] bg-[#00E676]/10 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute top-1/3 right-10 w-[250px] sm:w-[350px] md:w-[500px] h-[250px] sm:h-[350px] md:h-[500px] bg-emerald-500/5 rounded-full blur-[140px] pointer-events-none -z-10" />
 
-      {/* Grid Pattern overlay */}
+      {/* Grid Pattern overlay */}  
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none -z-10" />
 
       <div className="section-padding-x max-w-[1600px] mx-auto">
@@ -39,19 +49,23 @@ const Hero = () => {
 
             {/* Main Title */}
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[46px] font-extrabold tracking-tight text-white leading-[1.18] mb-4 sm:mb-5">
-              <span className="text-[#00E676] block filter drop-shadow-[0_0_18px_rgba(0,230,118,0.22)]">
-                BET SNIPE
-              </span>
-              AGGRESSIVE, DATA-
-              <br />
-              BACKED SPORTS INTEL.
+              {heroContent?.headline ? (
+                heroContent.headline
+              ) : (
+                <>
+                  <span className="text-[#00E676] block filter drop-shadow-[0_0_18px_rgba(0,230,118,0.22)]">
+                    BET SNIPE
+                  </span>
+                  AGGRESSIVE, DATA-
+                  <br />
+                  BACKED SPORTS INTEL.
+                </>
+              )}
             </h1>
 
             {/* Description */}
             <p className="text-xs sm:text-sm md:text-base text-gray-300 leading-relaxed max-w-xl mb-6 sm:mb-7 font-normal">
-              Bet Snipe blends advanced data models, market movement tracking,
-              and sharp-style logic to surface edges before the public reacts.
-              You're still in control of the trigger — we just load the intel.
+              {subheadline}
             </p>
 
             {/* CTA Buttons */}
@@ -60,7 +74,7 @@ const Hero = () => {
                 onClick={() => scrollTo("#pricing")}
                 className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-sm md:text-base font-bold btn-primary-gradient rounded-full cursor-pointer uppercase tracking-wider"
               >
-                <span>START 7-DAY FREE TRIAL</span>
+                <span>{ctaButtonText}</span>
                 <ChevronDown className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" />
               </button>
 

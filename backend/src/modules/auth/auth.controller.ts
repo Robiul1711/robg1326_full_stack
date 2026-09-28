@@ -1,34 +1,14 @@
 import { Request, Response } from "express";
 import * as authService from "./auth.service";
 
-export const register = async (req: Request, res: Response) => {
-  await authService.register(req, res);
-};
-
-export const login = async (req: Request, res: Response) => {
-  await authService.login(req, res);
-};
-
-export const forgotPassword = async (req: Request, res: Response) => {
-  await authService.forgotPassword(req, res);
-};
-
-export const verifyEmail = async (req: Request, res: Response) => {
-  await authService.verifyEmail(req, res);
-};
-
-export const setNewPassword = async (req: Request, res: Response) => {
-  await authService.setNewPassword(req, res);
-};
-
-export const getMe = async (req: Request, res: Response) => {
-  await authService.getMe(req, res);
-};
-
-export const logout = async (req: Request, res: Response) => {
-  await authService.logout(req, res);
-};
-
-export const getAllUsers = async (req: Request, res: Response) => {
-  await authService.getAllUsers(req, res);
-};
+export const register = (req: Request, res: Response) => authService.register(req, res);
+export const login = (req: Request, res: Response) => authService.login(req, res);
+export const forgotPassword = (req: Request, res: Response) => authService.forgotPassword(req, res);
+export const setNewPassword = (req: Request, res: Response) => authService.setNewPassword(req, res);
+export const changePassword = (req: Request, res: Response) => authService.changePassword(req, res);
+export const getMe = (req: Request, res: Response) => authService.getMe(req, res);
+export const logout = (req: Request, res: Response) => authService.logout(req, res);
+export const getAllUsers = (req: Request, res: Response) => authService.getAllUsers(req, res);
+export const updateUserStatus = (req: Request, res: Response) => authService.updateUserStatus(req, res);
+export const deleteUser = (req: Request, res: Response) => authService.deleteUser(req, res);
+export const getAdminStats = (req: Request, res: Response) => authService.getAdminStats(req, res);
