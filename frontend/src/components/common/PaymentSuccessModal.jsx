@@ -3,8 +3,6 @@ import { motion, AnimatePresence } from "motion/react";
 import {
   CheckCircle,
   Sparkles,
-  Send,
-  ArrowRight,
   ShieldCheck,
   X,
 } from "lucide-react";
@@ -100,19 +98,9 @@ const PaymentSuccessModal = ({
 
           {/* Action Buttons */}
           <div className="space-y-3">
-            <a
-              href="https://discord.gg/betsnipe"
-              target="_blank"
-              rel="noreferrer"
-              className="w-full py-3.5 px-5 rounded-full font-extrabold text-xs sm:text-sm uppercase tracking-wider btn-primary-gradient flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,230,118,0.35)] hover:scale-[1.02] transition-transform cursor-pointer"
-            >
-              <Send size={15} />
-              <span>JOIN VIP DISCORD & TELEGRAM BOT</span>
-            </a>
-
             <button
               onClick={onClose}
-              className="w-full py-3 px-5 rounded-full font-bold text-xs sm:text-sm text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors cursor-pointer"
+              className="w-full py-3.5 px-5 rounded-full font-extrabold text-xs sm:text-sm uppercase tracking-wider btn-primary-gradient flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,230,118,0.35)] hover:scale-[1.02] transition-transform cursor-pointer"
             >
               Back to Platform
             </button>
