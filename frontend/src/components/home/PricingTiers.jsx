@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { Check, Sparkles, Loader2 } from "lucide-react";
-import { useCreateCheckoutMutation, useGetCmsContentQuery } from "../../redux/api/apiSlice";
+import {
+  useCreateCheckoutMutation,
+  useGetCmsContentQuery,
+} from "../../redux/api/apiSlice";
 import { useSelector } from "react-redux";
 import { selectIsAuthenticated } from "../../redux/slices/authSlice";
 
@@ -71,7 +74,8 @@ const DEFAULT_PRICING_PLANS = [
 const PricingTiers = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const { data: cmsRes } = useGetCmsContentQuery();
-  const [createCheckout, { isLoading: isCheckingOut }] = useCreateCheckoutMutation();
+  const [createCheckout, { isLoading: isCheckingOut }] =
+    useCreateCheckoutMutation();
   const [selectedPlanName, setSelectedPlanName] = useState(null);
 
   const packages =
@@ -88,7 +92,8 @@ const PricingTiers = () => {
       const el = document.querySelector("#login");
       if (el) {
         const topOffset = 80;
-        const pos = el.getBoundingClientRect().top + window.pageYOffset - topOffset;
+        const pos =
+          el.getBoundingClientRect().top + window.pageYOffset - topOffset;
         window.scrollTo({ top: pos, behavior: "smooth" });
       }
       return;
@@ -107,7 +112,9 @@ const PricingTiers = () => {
         window.location.href = checkoutUrl;
       }
     } catch (err) {
-      alert(err?.data?.message || "Failed to start checkout. Please try again.");
+      alert(
+        err?.data?.message || "Failed to start checkout. Please try again.",
+      );
     } finally {
       setSelectedPlanName(null);
     }

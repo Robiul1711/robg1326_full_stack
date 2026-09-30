@@ -1,8 +1,20 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { CheckCircle, Sparkles, Send, ArrowRight, ShieldCheck, X } from "lucide-react";
+import {
+  CheckCircle,
+  Sparkles,
+  Send,
+  ArrowRight,
+  ShieldCheck,
+  X,
+} from "lucide-react";
 
-const PaymentSuccessModal = ({ isOpen, onClose, planName = "VIP Membership", isTrial = false }) => {
+const PaymentSuccessModal = ({
+  isOpen,
+  onClose,
+  planName = "VIP Membership",
+  isTrial = false,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -49,7 +61,9 @@ const PaymentSuccessModal = ({ isOpen, onClose, planName = "VIP Membership", isT
           {/* Badge */}
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#00E676]/15 border border-[#00E676]/40 text-[#00E676] text-xs font-extrabold uppercase tracking-wider mb-3">
             <Sparkles size={13} />
-            <span>{isTrial ? "7-DAY TRIAL ACTIVATED" : "PAYMENT SUCCESSFUL"}</span>
+            <span>
+              {isTrial ? "7-DAY TRIAL ACTIVATED" : "PAYMENT SUCCESSFUL"}
+            </span>
           </div>
 
           {/* Title */}
@@ -78,7 +92,9 @@ const PaymentSuccessModal = ({ isOpen, onClose, planName = "VIP Membership", isT
             </div>
             <div className="flex items-center justify-between text-xs border-t border-white/5 pt-2">
               <span className="text-gray-400">Multi-Device Access:</span>
-              <span className="font-semibold text-gray-200">iOS • Android • Web</span>
+              <span className="font-semibold text-gray-200">
+                iOS • Android • Web
+              </span>
             </div>
           </div>
 

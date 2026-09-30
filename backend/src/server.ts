@@ -8,10 +8,25 @@ import { seedDatabase } from "./config/seed";
 const server = http.createServer(app);
 
 const io = new Server(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+ cors: {
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "http://localhost:5175",
+      "https://bet-snipe.vercel.app",
+      "*",
+    ];
+
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
   },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+},
 });
 
 io.on("connection", (socket) => {
