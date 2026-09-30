@@ -30,7 +30,12 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
       return errorResponse(res, "User not found", 404);
     }
 
-    const clientUrl = env.CLIENT_URL || "http://localhost:5173";
+    let clientUrl = env.CLIENT_URL || "https://bet-snipe.vercel.app";
+    const originHeader = req.headers.origin;
+    if (originHeader && (originHeader.includes("localhost") || originHeader.includes("vercel.app") || originHeader.includes("betsnipe"))) {
+      clientUrl = originHeader;
+    }
+    clientUrl = clientUrl.replace(/\/$/, "");
 
     // Fetch CMS content for dynamic packages
     const cms = await CMSContent.findOne();
