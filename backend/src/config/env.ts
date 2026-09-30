@@ -12,7 +12,7 @@ const envSchema = z.object({
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_PUBLISHABLE_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
-  CLIENT_URL: z.string().default("http://localhost:5173"),
+  CLIENT_URL: z.string().default("https://bet-snipe.vercel.app"),
   ADMIN_URL: z.string().default("http://localhost:5174"),
   SMTP_HOST: z.string().optional(),
   SMTP_PORT: z.string().optional(),
