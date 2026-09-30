@@ -52,10 +52,7 @@ const FAQ = () => {
   const rightColumnFaqs = allFaqs.slice(midpoint);
 
   // Open first item of each column by default
-  const defaultOpen = [
-    leftColumnFaqs[0]?.id ?? 0,
-    rightColumnFaqs[0]?.id ?? 3,
-  ];
+  const defaultOpen = [leftColumnFaqs[0]?.id ?? 0, rightColumnFaqs[0]?.id ?? 3];
   const [openIds, setOpenIds] = useState(defaultOpen);
 
   const toggleFAQ = (id) => {

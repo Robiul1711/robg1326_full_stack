@@ -80,7 +80,8 @@ const Home = () => {
     const el = document.querySelector("#pricing");
     if (el) {
       const topOffset = 80;
-      const pos = el.getBoundingClientRect().top + window.pageYOffset - topOffset;
+      const pos =
+        el.getBoundingClientRect().top + window.pageYOffset - topOffset;
       window.scrollTo({ top: pos, behavior: "smooth" });
     }
   };

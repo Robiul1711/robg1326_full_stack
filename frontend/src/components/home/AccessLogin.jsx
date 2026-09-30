@@ -16,9 +16,17 @@ import {
   Sparkles,
   X,
 } from "lucide-react";
-import { useLoginMutation, useRegisterMutation, useCreateCheckoutMutation } from "../../redux/api/apiSlice";
+import {
+  useLoginMutation,
+  useRegisterMutation,
+  useCreateCheckoutMutation,
+} from "../../redux/api/apiSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setCredentials, selectCurrentUser, selectIsAuthenticated } from "../../redux/slices/authSlice";
+import {
+  setCredentials,
+  selectCurrentUser,
+  selectIsAuthenticated,
+} from "../../redux/slices/authSlice";
 
 const benefits = [
   {
@@ -74,7 +82,11 @@ const AccessLogin = () => {
     checkPendingPackage();
     const handleStorageUpdate = () => checkPendingPackage();
     window.addEventListener("pending_checkout_updated", handleStorageUpdate);
-    return () => window.removeEventListener("pending_checkout_updated", handleStorageUpdate);
+    return () =>
+      window.removeEventListener(
+        "pending_checkout_updated",
+        handleStorageUpdate,
+      );
   }, []);
 
   const clearPendingPackage = () => {
@@ -97,7 +109,10 @@ const AccessLogin = () => {
         userData = res?.data || res;
         dispatch(setCredentials(userData));
       } else {
-        const res = await login({ email: formData.email, password: formData.password }).unwrap();
+        const res = await login({
+          email: formData.email,
+          password: formData.password,
+        }).unwrap();
         userData = res?.data || res;
         dispatch(setCredentials(userData));
       }
@@ -139,7 +154,9 @@ const AccessLogin = () => {
       });
     } catch (err) {
       const errMsg =
-        err?.data?.message || err?.error || "Authentication failed. Please check your credentials.";
+        err?.data?.message ||
+        err?.error ||
+        "Authentication failed. Please check your credentials.";
       setMessage({ text: errMsg, type: "error" });
       setIsRedirecting(false);
     }
@@ -170,7 +187,9 @@ const AccessLogin = () => {
 
             {/* Main Title */}
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-extrabold text-white tracking-tight leading-[1.2] mb-4">
-              {isRegisterMode ? "Create your account &" : "Log in or start your"}{" "}
+              {isRegisterMode
+                ? "Create your account &"
+                : "Log in or start your"}{" "}
               <br className="hidden sm:inline" />
               <span className="text-[#00E676]">7-day free trial.</span>
             </h2>
@@ -221,7 +240,6 @@ const AccessLogin = () => {
             className="lg:col-span-6 flex justify-center lg:justify-end"
           >
             <div className="w-full max-w-lg rounded-2xl sm:rounded-3xl bg-[#0e1319]/95 border border-white/10 p-6 sm:p-8 shadow-2xl backdrop-blur-xl hover:border-[#00E676]/35 transition-all duration-300">
-              
               {/* Switch Mode Tabs (Log In vs Register) */}
               <div className="flex items-center p-1 bg-[#141a22] border border-white/10 rounded-xl mb-6">
                 <button
@@ -265,9 +283,18 @@ const AccessLogin = () => {
                     </div>
                     <div className="text-xs truncate">
                       <p className="text-white font-bold truncate">
-                        Selected: <span className="text-[#00E676]">{pendingPackage.name}</span> ({pendingPackage.discountPrice || `$${pendingPackage.price}`}{pendingPackage.period || "/mo"})
+                        Selected:{" "}
+                        <span className="text-[#00E676]">
+                          {pendingPackage.name}
+                        </span>{" "}
+                        (
+                        {pendingPackage.discountPrice ||
+                          `$${pendingPackage.price}`}
+                        {pendingPackage.period || "/mo"})
                       </p>
-                      <p className="text-[11px] text-gray-400">Complete login to proceed to Stripe checkout</p>
+                      <p className="text-[11px] text-gray-400">
+                        Complete login to proceed to Stripe checkout
+                      </p>
                     </div>
                   </div>
                   <button
@@ -367,13 +394,19 @@ const AccessLogin = () => {
                   disabled={isLoggingIn || isRegistering}
                   className="w-full py-3.5 px-4 rounded-full font-bold text-xs sm:text-sm md:text-base btn-primary-gradient cursor-pointer uppercase tracking-wider text-center flex items-center justify-center gap-2 disabled:opacity-50"
                 >
-                  {(isLoggingIn || isRegistering) ? (
+                  {isLoggingIn || isRegistering ? (
                     <>
                       <Loader2 size={16} className="animate-spin" />
-                      <span>{isRegisterMode ? "Creating Account..." : "Signing In..."}</span>
+                      <span>
+                        {isRegisterMode
+                          ? "Creating Account..."
+                          : "Signing In..."}
+                      </span>
                     </>
                   ) : (
-                    <span>{isRegisterMode ? "CREATE FREE ACCOUNT" : "LOG IN"}</span>
+                    <span>
+                      {isRegisterMode ? "CREATE FREE ACCOUNT" : "LOG IN"}
+                    </span>
                   )}
                 </button>
 
@@ -388,9 +421,19 @@ const AccessLogin = () => {
                     className="text-xs text-gray-400 hover:text-[#00E676] transition-colors cursor-pointer"
                   >
                     {isRegisterMode ? (
-                      <span>Already have an account? <strong className="text-[#00E676] underline">Log In</strong></span>
+                      <span>
+                        Already have an account?{" "}
+                        <strong className="text-[#00E676] underline">
+                          Log In
+                        </strong>
+                      </span>
                     ) : (
-                      <span>New to Bet Snipe? <strong className="text-[#00E676] underline">Create Free Account</strong></span>
+                      <span>
+                        New to Bet Snipe?{" "}
+                        <strong className="text-[#00E676] underline">
+                          Create Free Account
+                        </strong>
+                      </span>
                     )}
                   </button>
                 </div>

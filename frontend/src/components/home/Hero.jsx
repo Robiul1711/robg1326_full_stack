@@ -8,8 +8,11 @@ const Hero = () => {
   const heroContent = cmsRes?.data?.hero;
 
   // CMS values with fallback to hardcoded defaults
-  const headline = heroContent?.headline || "BET SNIPE AGGRESSIVE, DATA-BACKED SPORTS INTEL.";
-  const subheadline = heroContent?.subheadline || "Bet Snipe blends advanced data models, market movement tracking, and sharp-style logic to surface edges before the public reacts. You're still in control of the trigger — we just load the intel.";
+  const headline =
+    heroContent?.headline || "BET SNIPE AGGRESSIVE, DATA-BACKED SPORTS INTEL.";
+  const subheadline =
+    heroContent?.subheadline ||
+    "Bet Snipe blends advanced data models, market movement tracking, and sharp-style logic to surface edges before the public reacts. You're still in control of the trigger — we just load the intel.";
   const ctaButtonText = heroContent?.ctaButtonText || "START 7-DAY FREE TRIAL";
 
   const scrollTo = (id) => {
@@ -22,14 +25,13 @@ const Hero = () => {
     }
   };
 
-
   return (
     <section className="relative pt-24 pb-8 sm:pt-28 sm:pb-10 md:pt-32 md:pb-12 lg:pt-36 lg:pb-14 overflow-hidden">
       {/* Background Ambient Glows */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[450px] md:w-[600px] h-[300px] sm:h-[450px] md:h-[600px] bg-[#00E676]/10 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute top-1/3 right-10 w-[250px] sm:w-[350px] md:w-[500px] h-[250px] sm:h-[350px] md:h-[500px] bg-emerald-500/5 rounded-full blur-[140px] pointer-events-none -z-10" />
 
-      {/* Grid Pattern overlay */}  
+      {/* Grid Pattern overlay */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none -z-10" />
 
       <div className="section-padding-x max-w-[1600px] mx-auto">

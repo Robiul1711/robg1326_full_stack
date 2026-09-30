@@ -52,16 +52,19 @@ const PaymentCancelModal = ({ isOpen, onClose, onRetry }) => {
           </h2>
 
           <p className="text-xs sm:text-sm text-gray-300 leading-relaxed mb-6">
-            Your checkout session was cancelled or timed out. No money has been deducted from your card.
+            Your checkout session was cancelled or timed out. No money has been
+            deducted from your card.
           </p>
 
           {/* Info Box */}
           <div className="rounded-2xl bg-[#141b24] border border-white/5 p-4 mb-6 text-left text-xs text-gray-400 space-y-2">
             <p>
-              • You can restart the 7-day free trial or select another plan whenever you're ready.
+              • You can restart the 7-day free trial or select another plan
+              whenever you're ready.
             </p>
             <p>
-              • If you experienced a payment error or card issue, try using another card or contact support.
+              • If you experienced a payment error or card issue, try using
+              another card or contact support.
             </p>
           </div>
 
@@ -89,7 +92,15 @@ const PaymentCancelModal = ({ isOpen, onClose, onRetry }) => {
           {/* Support Link */}
           <div className="mt-5 text-[11px] text-gray-400 flex items-center justify-center gap-1.5">
             <Mail size={13} className="text-[#00E676]" />
-            <span>Need help? Contact <a href="mailto:support@betsnipe.com" className="text-[#00E676] hover:underline">support@betsnipe.com</a></span>
+            <span>
+              Need help? Contact{" "}
+              <a
+                href="mailto:support@betsnipe.com"
+                className="text-[#00E676] hover:underline"
+              >
+                support@betsnipe.com
+              </a>
+            </span>
           </div>
         </motion.div>
       </div>
