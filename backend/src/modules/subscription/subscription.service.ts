@@ -239,7 +239,8 @@ export const handleWebhook = async (req: Request, res: Response) => {
   }
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, env.STRIPE_WEBHOOK_SECRET);
+    const rawPayload = (req as any).rawBody || req.body;
+    event = stripe.webhooks.constructEvent(rawPayload, sig, env.STRIPE_WEBHOOK_SECRET);
   } catch (err: any) {
     console.error(`⚠️ Webhook signature verification failed: ${err.message}`);
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -248,10 +249,13 @@ export const handleWebhook = async (req: Request, res: Response) => {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session;
     const userId = session.metadata?.userId;
-    const plan = (session.metadata?.plan || "monthly") as "monthly" | "yearly";
+    const plan = (session.metadata?.plan || "monthly") as any;
 
     if (userId) {
-      const expirationDays = plan === "yearly" ? 365 : 30;
+      const expirationDays =
+        String(plan).toLowerCase().includes("whale") || String(plan).toLowerCase().includes("yearly")
+          ? 365
+          : 30;
       const expiresAt = new Date(Date.now() + expirationDays * 24 * 60 * 60 * 1000);
 
       await User.findByIdAndUpdate(userId, {
